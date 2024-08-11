@@ -15,7 +15,7 @@ const stops=[
     }
 ]
 async function getRoutePolygon(stops){
-    const qry = `${server.osrmBackendUrl}/route/v1/driving/<coordinates>?steps=false&alternatives=false`
+    const qry = `${server.osrmBackendUrl}/route/v1/driving/<coordinates>?steps=false&alternatives=false&overview=full`
     var cords =  stops.map(a=>`${a.long},${a.lat}`).filter(a=>(a??false)!==false).join(";")
     var res;
     try{
