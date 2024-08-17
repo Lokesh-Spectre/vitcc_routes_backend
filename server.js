@@ -7,7 +7,8 @@ import cors from "cors";
 import cron from "node-cron";
 import constants from "./constants.js";
 import pollRouter from "./controllers/pollController.js";
-import models from "./models/models.js";
+import updateRouter from "./controllers/updateRoutesController.js" 
+
 const server = constants.server;
 
 const app = express();
@@ -18,13 +19,17 @@ app.use(cors())
 app.get("/",(req,res)=>{
     res.status(200).send("VITCC BUS ROUTES DISPLAY BACKEND");
 })
+
+// controllers
+app.use("/routes",routeRouter);
+app.use("/updateRoutes",updateRouter);
 if (server.mode=="DEV"){
     app.use("/pollSampleData",pollRouter);
 }
 
-// controllers
-app.use("/routes",routeRouter);
-cron.schedule(server.poll_cronSchedule,updateData)
+// cron job(s)
+cron.schedule(server.poll_cronSchedule,updateData);
+
 app.listen(server.PORT,(err)=>{
     if (err){
         console.log(err);
