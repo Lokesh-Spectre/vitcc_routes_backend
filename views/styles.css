@@ -1,0 +1,478 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+.loading-screen {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    position: fixed;
+    display: none;
+}
+
+.loading-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-content .ly-1,
+.loading-content .ly-2,
+.loading-content .ly-3 {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.res-error
+{
+    display: none;
+}
+.ly-1 {
+    height: 250px; 
+    width: 250px;   
+    z-index: 1;     
+    top: 30%;
+}
+
+.ly-2 {
+    height: 220px;  /* Customize height */
+    width: 220px;   /* Customize width */
+    z-index: 2;     /* Ensure correct stacking order */
+    top: 32%;         /* Stacking directly on top of .ly-1 */
+}
+
+.ly-3 {
+    height: 115px;  /* Customize height */
+    width: 115px;   /* Customize width */
+    z-index: 3;     /* Ensure correct stacking order */
+    top: 39%;         /* Stacking directly on top of .ly-2 */
+}
+
+.ly-1 img,
+.ly-2 img,
+.ly-3 img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Ensure the images cover the div without overflowing */
+}
+.ly-3 img {
+    width: 90%;
+    height: auto;
+}
+
+.ly-1
+{
+    animation: fade 0.7s infinite alternate;
+}
+.wrapper{
+  width: 70%;
+  background-color: transparent;
+
+}
+.select-btn, li{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.select-btn{
+  height: 60px;
+  padding: 0 20px;
+  font-size: 22px;
+  background: #fff;
+  border-radius: 20px;
+  justify-content: space-between;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.select-btn i{
+  font-size: 31px;
+  transition: transform 0.3s linear;
+}
+.wrapper.active .select-btn i{
+  transform: rotate(-180deg);
+}
+.content{
+  display: none;
+  padding: 20px;
+  margin-top: 15px;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.wrapper.active .content{
+  display: block;
+}
+.content .search{
+  position: relative;
+}
+.search i{
+  top: 50%;
+  left: 15px;
+  color: #999;
+  font-size: 20px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  position: absolute;
+}
+.search input{
+  height: 50px;
+  width: 80%;
+  outline: none;
+  font-size: 17px;
+  border-radius: 5px;
+  padding: 0 20px 0 43px;
+  border: 1px solid #B3B3B3;
+}
+.search input:focus{
+  padding-left: 42px;
+  border: 2px solid #4285f4;
+}
+.search input::placeholder{
+  color: #bfbfbf;
+}
+.content .options{
+  margin-top: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 7px;
+}
+.options::-webkit-scrollbar{
+  width: 7px;
+}
+.options::-webkit-scrollbar-track{
+  background: #f1f1f1;
+  border-radius: 25px;
+}
+.options::-webkit-scrollbar-thumb{
+  background: #ccc;
+  border-radius: 25px;
+}
+.options::-webkit-scrollbar-thumb:hover{
+  background: #b3b3b3;
+}
+.options li{
+  height: 50px;
+  padding: 0 13px;
+  font-size: 21px;
+}
+.options li:hover, li.selected{
+  border-radius: 5px;
+  background: #f2f2f2;
+}
+        #map {
+            height: 100vh;
+            position: fixed;
+            
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            
+        }
+        .leaflet-routing-container {
+            display: none;
+        }
+        .route-name {
+            font-size: 14px;
+            font-weight: bold;
+            background-color: transparent;
+        }
+        .route-name div {
+            font-size: 14px;
+            font-weight: bold;
+            background-color: white;
+            display: inline-block;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 1000;
+            }
+        }
+        .animated-path {
+            stroke-dasharray: 14;
+            animation: dash 16s linear infinite;
+        }
+
+        @keyframes fade {
+            0% {opacity: 1;}
+            100% {opacity: 0;}
+        }
+        .vitc-background {
+            animation: fade 1s infinite alternate;
+        }
+        .vitc-background-2 {
+            top: 10%;
+        }
+        .user-location-icon {
+            background: #fff; 
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            display: inline-block;
+        }
+        .user-location-icon:before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 16px;
+            height: 16px;
+            background: #4285F4; 
+            border-radius: 50%;
+        }
+        .wrapper-cont
+        {
+            width:100%;
+            position: fixed;
+            z-index: 1110;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 4%;
+            right: 5%;
+        }
+        .side-bar
+        {
+            background-color: white;
+            position: fixed;
+            height: 100%;
+            width: 7%;
+            top: 0;
+            left: 0;
+            z-index: 1500;
+        }
+
+        .icon-holder
+        {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25%;
+        }
+        .icon-holder img
+        {
+            width: 70%;
+            height: auto;
+        }
+        .route-options
+        {
+            display: flex;
+            height: 50%;
+            margin-top: 20px;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+        .route-options button
+        {
+            width: 100%;
+            height: 5vw;
+            background-color: transparent;
+            border: none;
+        }
+        .route-options button:hover
+        {
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.6); 
+        }
+        .route-options button img
+        {
+            width: 35%;
+            height: auto;
+            transition: all 0.4s linear;
+        }
+        .route-options button img:hover
+        {
+            width: 42%;
+            height: auto;
+            transition: all 0.4s linear;
+        }
+        .location-button
+        {
+            display: flex;
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            height: auto;
+            z-index: 2000;
+            background-color: transparent;
+            right: 2%;
+            bottom: 2%;
+            
+        }
+        .location-button button
+        {
+            background-color: white;
+            border-radius: 50px;
+            height: 50px;
+            width: 50px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .location-button img
+        {
+            width: 60%;
+            height: auto;
+            transform: translateY(1%);
+        }
+        .clg-button
+        {
+            display: flex;
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            height: auto;
+            z-index: 2000;
+            background-color: transparent;
+            right: 2%;
+            bottom: 10%;
+            
+        }
+        .clg-button button
+        {
+            background-color: white;
+            border-radius: 50px;
+            height: 50px;
+            width: 50px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .clg-button img
+        {
+            width: 60%;
+            height: auto;
+            transform: translateY(1%);
+        }
+        @media only screen and (max-width: 700px)  {
+        .clg-button
+        {
+            display: flex;
+            position: fixed;
+            width: 10%;
+            height: 30%;
+            z-index: 2000;
+            background-color: transparent;
+            right: 2%;
+            bottom: -1%;
+            
+        }
+        .location-button
+        {
+            display: flex;
+            position: fixed;
+            width: 10%;
+            height: 30%;
+            z-index: 2000;
+            background-color: transparent;
+            right: 2%;
+            bottom: -10%;
+            
+        }
+        .side-bar
+        {
+            background-color: white;
+            position: fixed;
+            height: 10%;
+            width: 100%;
+            top: 90%;
+            left: 0;
+            z-index: 1500;
+        }
+        .icon-holder
+        {
+            display: none;
+        }
+        .route-options
+        {
+            display: flex;
+            height: 50%;
+            margin-top: 20px;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        .route-options button
+        {
+            width: 80%;
+            background-color: transparent;
+            border: none;
+        }
+        .route-options button:hover
+        {
+            box-shadow: none; 
+        }
+        .route-options button img
+        {
+            width: auto;
+            height: 100%;
+            transition: all 0.4s linear;
+        }
+        .route-options button img:hover
+        {
+            width: auto;
+            height: 100%;
+            transition: all 0.4s linear;
+        }
+        .select-btn{
+            position: fixed;
+            top: 2%;
+            height: 5%;
+            width: 90%;
+            right: 5%;
+            font-size: 15px;
+            background: #fff;
+            border-radius: 20px;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    }
+    @media only screen and (max-height: 650px)  {
+        
+        .side-bar
+        {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLljzuZRwwvegJ4lBYMgpF6A4DYbNG2ZhT590UYTrFP2X1gFWEWkTjXMSrgKBkReb-DE0&usqp=CAU');
+            background-color: white;
+            position: fixed;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 80%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 6000;
+        }
+        .icon-holder
+        {
+            display: none;
+        }
+        .route-options button
+        {
+            display: none;
+        }
+        .res-error
+        {
+            display: flex;
+            width: 100%;
+            height: 20%;
+            background-color: white;
+            z-index: 7000;
+            position: fixed;
+            bottom: 0;
+            align-items: center;
+            justify-content: center;
+
+        }
+    }
