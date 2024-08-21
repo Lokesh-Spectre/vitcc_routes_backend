@@ -1,5 +1,4 @@
 import express from "express";
-import constants from "../constants.js";
 
 const sampleData=[{
 	"routeNo":"9A",

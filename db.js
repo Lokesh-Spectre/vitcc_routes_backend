@@ -1,9 +1,11 @@
 import { Sequelize } from "sequelize";
-import constants from "./constants.js";
-
+import {DB} from "./constants.js";
+import {getLogger} from "./utils/getLogger.js";
+const logger = getLogger("sequelize",true);
 const sequelize = new Sequelize({
-    dialect: constants.DB.dialect,
-    storage: constants.DB.storage
+    dialect: DB.dialect,
+    storage: DB.storage,
+    logging:logger
 });
 
 

@@ -1,5 +1,4 @@
-import constants from "../constants.js";
-const server = constants.server;
+import {server} from "../constants.js";
 const stops=[
     {
         lat:"13.06086371248775",

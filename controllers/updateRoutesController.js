@@ -1,11 +1,10 @@
 import express from "express";
 import models from "../models/models.js";
 import getPolygon from "../utils/getRoutePolygon.js"
-import constants from "../constants.js";
+import {management} from "../constants.js";
 
 const router = express.Router();
 
-const {management} = constants;
 router.post("/",async (req,res)=>{
     // const res = await fetch(server.poll_url);
     try{

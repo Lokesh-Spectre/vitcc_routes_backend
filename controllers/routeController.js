@@ -1,8 +1,7 @@
 import express from "express";
 import models from "../models/models.js";
 import getPolygon from "../utils/getRoutePolygon.js"
-import constants from "../constants.js";
-const management = constants.management
+import {management} from "../constants.js";
 const router = express.Router();
 
 router.get("/",async (req,res)=>{

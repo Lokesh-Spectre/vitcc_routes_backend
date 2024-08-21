@@ -2,8 +2,7 @@ import routesModel from "./routesModel.js";
 import stopsModel from "./stopsModel.js";
 import sequelize from "../db.js";
 
-import constants from "../constants.js";
-const server = constants.server;
+import {server} from "../constants.js";
 // keep in mind
 // things can be automatically imported and added to models:
 // sequelize.models gives {'modelName':modelObject,...}

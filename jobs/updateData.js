@@ -1,8 +1,9 @@
-import constants from "../constants.js"; 
+import {server,management} from "../constants.js"; 
 import models from "../models/models.js";
-import logger from "../logger.js";
 import getPolygon from "../utils/getRoutePolygon.js";
-const {server,management} = constants;
+import { getLogger } from "../utils/getLogger.js";
+
+const log = getLogger("dataPolling")
 async function updateData(){
     try{
         const time= new Date().getTime();
@@ -29,7 +30,8 @@ async function updateData(){
                 }))
             }
         }
-        console.log(`Update function call @${new Date(time).toISOString()} took ${(new Date().getTime() - time)} ms to complete successfully`)
+        log(`Update function SUCCESSFUL. processing time: ${(new Date().getTime() - time)} ms\tNo of routes:${routes.length}`)
+        log(`Update function call @${new Date(time).toISOString()} took ${(new Date().getTime() - time)} ms to complete successfully`)
     } catch (e){
         console.log(`##ERROR\n${e}\nSTACK:\n${e.stack}`);
     }
