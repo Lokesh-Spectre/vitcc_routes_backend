@@ -102,6 +102,7 @@
       searchInp = wrapper.querySelector("input"),
       options = wrapper.querySelector(".options");
       let routes_names = [[],[]];
+      colours = ["#800080","#e933ab","#39ff14","#dc143c","blue"];
       var map;
       const customStoppingIcon = L.icon({
           iconUrl: 'BusStop.png', 
@@ -240,7 +241,7 @@
           var latlngs = decodePolyline(data[index].geometry);
           console.log(latlngs);
           L.polyline.antPath(latlngs, {
-              color:"blue" ,
+              color:colours[(Math.floor(Math.random()*colours.length))] ,
               dashArray: [20,20],
               delay: 4000,
               weight: 6,
@@ -321,7 +322,7 @@
               .addTo(map);
               var latlngs = decodePolyline(routes.geometry);
               L.polyline.antPath(latlngs, {
-                  color:"blue" ,
+                  color: colours[(Math.floor(Math.random() * colours.length))] ,
                   dashArray: [20,20],
                   delay: 4000,
                   weight: 4,
@@ -343,7 +344,7 @@
                   console.log(routes.type);
                   var latlngs = decodePolyline(routes.geometry);
                   L.polyline.antPath(latlngs, {
-                      color:"red" ,
+                      color:colours[(Math.floor(Math.random()*colours.length))] ,
                       dashArray: [20,20],
                       delay: 4000,
                       weight: 5,
