@@ -17,6 +17,8 @@ const app = express();
 app.set("view engine", "ejs");
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/testApp",express.static(path.join(__dirname, 'testApp')));
+app.use("/assets",express.static(path.join(__dirname, 'testApp/assets')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const morganFormat = ":method :url :status :response-time ms - :res[content-length]"
