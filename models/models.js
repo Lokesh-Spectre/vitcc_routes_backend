@@ -16,4 +16,5 @@ const models ={
     routes:routesModel,
     stops:stopsModel,
 }
+export {routesModel,stopsModel};
 export default models;
