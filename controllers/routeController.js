@@ -20,10 +20,17 @@ router.get("/:id", async (req,res)=>{
 router.post("/",async (req,res)=>{
     const data = req.body;
     data.destination ??= management.vitccLocation;
-    const stopsData = [data.startPoint,...data.stops, data.destination];
+    const stopsData = data.stops;
     const polygon = (await getPolygon(stopsData)).routes;
+    console.log("Sometasdf");
     if (polygon.length){
         const geometry = polygon[0].geometry;
+        data.startPoint ??= data.stops[0];
+        // const tmp = await models.routes.findOne({where:{routeNo:data.routeNo}})
+        await models.routes.destroy({
+            where:{routeNo:data.routeNo},
+            include:[models.stops]
+        })
         const route = await models.routes.create({
             routeNo:data.routeNo,
             name: data.name,
