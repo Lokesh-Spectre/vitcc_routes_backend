@@ -18,33 +18,42 @@ router.get("/:id", async (req,res)=>{
     }
 })
 router.post("/",async (req,res)=>{
-    const data = req.body;
-    data.destination ??= management.vitccLocation;
-    const stopsData = data.stops;
-    const polygon = (await getPolygon(stopsData)).routes;
-    console.log("Sometasdf");
-    if (polygon.length){
-        const geometry = polygon[0].geometry;
-        data.startPoint ??= data.stops[0];
-        // const tmp = await models.routes.findOne({where:{routeNo:data.routeNo}})
-        await models.routes.destroy({
-            where:{routeNo:data.routeNo},
-            include:[models.stops]
-        })
-        const route = await models.routes.create({
-            routeNo:data.routeNo,
-            name: data.name,
-            routeId:data.routeId,
-            type:data.type,
-            startPoint:data.startPoint,
-            geometry});
+    var isDeleted;
+    try{
+        const data = req.body;
+        data.destination ??= management.vitccLocation;
+        const stopsData = [data.startPoint, ...data.stops,data.destination];
+        const polygon = (await getPolygon(stopsData)).routes;
+        if (polygon.length){
+            const geometry = polygon[0].geometry;
+            isDeleted = await models.routes.destroy({
+                where:{routeId:data.routeId},
+                include:[models.stops]
+            })
+            const route = await models.routes.create({
+                routeNo:data.routeNo,
+                name: data.name,
+                routeId:data.routeId,
+                type:data.type,
+                startPoint:data.startPoint,
+                geometry});
 
-        await models.stops.bulkCreate(data.stops.map(stop=>{
-            stop.routeId = route.id;
-            return stop
-        }))
+            await models.stops.bulkCreate(data.stops.map(stop=>{
+                stop.routeId = route.id;
+                return stop
+            }))
+        }
+        if(isDeleted===1){
+            res.status(200).send({message:"route updated successfully"})
+        }else if(isDeleted===0){
+            res.status(200).send({message:"route added successfully"})
+        }else{
+            res.status(400).send({message:"Something possibly went wrong"})
+        }
+    }catch(e){
+        console.log(e);
+        res.send({Error:e.message});
     }
-    res.status(200).send({message:"route added successfully"})
 })
 
 export default router;

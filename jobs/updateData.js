@@ -8,7 +8,8 @@ async function updateData(){
     try{
         const time= new Date().getTime();
         const res = await fetch(server.poll_url);
-        const routes = await res.json();
+        // const data= await res.json();
+        const routes = JSON.parse((await res.text()).replaceAll("longitude","long"))
         await models.routes.destroy({where:{},truncate:true})
         for (const route of routes){
             route.destination ??= management.vitccLocation;
