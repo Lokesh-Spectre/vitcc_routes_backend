@@ -25,7 +25,8 @@ async function getRoutePolygon(stops){
     }
     if (res.code=='NoRoute'){
         console.error("Not routable");
-    }
+    }console.log(res)
+    console.log(qry.replace("<coordinates>",cords))
     return res;
 }
 export default getRoutePolygon;

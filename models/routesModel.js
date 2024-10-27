@@ -10,7 +10,8 @@ const Routes = db.define(
     routeId: { type: DataTypes.TEXT, allowNull: false },
     type:{type:DataTypes.ENUM(["AC","NONAC"]),allowNull:false},
     startPoint: {type:DataTypes.JSON, allowNull:false},
-    geometry:{type:DataTypes.TEXT,allowNull:true}
+    geometry:{type:DataTypes.TEXT,allowNull:true},
+    destination: {type:DataTypes.JSON, allowNull:false}
   },
   {
     timestamps: false, // Disable createdAt and updatedAt timestamps

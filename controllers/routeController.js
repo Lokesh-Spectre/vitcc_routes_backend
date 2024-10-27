@@ -36,7 +36,9 @@ router.post("/",async (req,res)=>{
                 routeId:data.routeId,
                 type:data.type,
                 startPoint:data.startPoint,
-                geometry});
+                geometry,
+                destination:data.destination
+            });
 
             await models.stops.bulkCreate(data.stops.map(stop=>{
                 stop.routeId = route.id;
