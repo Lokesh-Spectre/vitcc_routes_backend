@@ -8,17 +8,12 @@ const router = express.Router();
 router.post("/",async (req,res)=>{
     // const res = await fetch(server.poll_url);
     try{
-<<<<<<< HEAD
         const routes = JSON.parse(JSON.stringify(await req.body).replaceAll("longitude","long"));
-=======
-        const routes = await req.body;
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         await models.routes.destroy({where:{},truncate:true})
         for (const route of routes){
             route.destination ??= management.vitccLocation;
             route.startPoint ??= route.stops.shift()
             const stopsData = [route.startPoint,...route.stops, route.destination];
-<<<<<<< HEAD
             var geometry=null;
             if (stopsData[1].lat !=0 && stopsData[1].long!=0){
                 const polygon = (await getPolygon(stopsData)).routes;
@@ -38,23 +33,6 @@ router.post("/",async (req,res)=>{
                 stop.routeId = routeRec.id;
                 return stop
             }))
-=======
-            const polygon = (await getPolygon(stopsData)).routes;
-            if (polygon.length){
-                const geometry = polygon[0].geometry;
-                const routeRec = await models.routes.create({
-                    routeNo:route.routeNo,
-                    name: route.name,
-                    routeId:route.routeId,
-                    type:route.type,
-                    startPoint:route.startPoint,
-                    geometry});
-                await models.stops.bulkCreate(route.stops.map(stop=>{
-                    stop.routeId = routeRec.id;
-                    return stop
-                }))
-            }
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         }
         res.status(200).send("ROUTES ARE UPDATED SUCCESSFULLY")
     }catch(e){

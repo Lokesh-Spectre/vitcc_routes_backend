@@ -22,12 +22,8 @@ router.post("/",async (req,res)=>{
     try{
         const data = req.body;
         data.destination ??= management.vitccLocation;
-<<<<<<< HEAD
         var stopsData = [data.startPoint, ...data.stops,data.destination];
         stopsData = stopsData.filter(e=>e.lat!=0&&e.long!=0);
-=======
-        const stopsData = [data.startPoint, ...data.stops,data.destination];
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         const polygon = (await getPolygon(stopsData)).routes;
         if (polygon.length){
             const geometry = polygon[0].geometry;
