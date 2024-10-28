@@ -5,7 +5,10 @@ import {management} from "../constants.js";
 const router = express.Router();
 
 router.get("/",async (req,res)=>{
-    const route = await models.routes.findAll({include:'stops'});
+    const route = await models.routes.findAll({include:'stops',order:[
+        ['id','ASC'],
+        ['stops','id','ASC']
+    ]});
     res.status(200).send(route);
 })
 router.get("/:id", async (req,res)=>{
