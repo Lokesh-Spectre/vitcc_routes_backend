@@ -1,0 +1,9 @@
+import urllib.request
+
+urls='''https://static.thenounproject.com/png/129978-200.png
+https://cdn.icon-icons.com/icons2/1369/PNG/512/-gps-fixed_90046.png
+https://cdn.freelogovectors.net/svg04/vitlogo.svg
+https://cdn-icons-png.flaticon.com/512/3313/3313834.png
+https://www.svgrepo.com/show/5179/route.svg
+https://static.vecteezy.com/system/resources/previews/021/212/057/original/no-air-conditioning-icon-style-free-vector.jpg'''
+[urllib.request.urlretrieve(url,url.split("/")[-1]) for url in urls.split("\n") ]

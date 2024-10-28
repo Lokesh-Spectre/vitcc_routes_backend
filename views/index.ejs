@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VITC Routing</title>
+    <div class="res-error">
+      <span>Screen size not supported. Resize or use portrait mode.</span>
+    </div>
+    <div class="loading-screen" id="loading-screen">
+      <div class="loading-content">
+        <div class="ly-1">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/021/815/780/small_2x/transparent-circle-icon-background-png.png"
+          />
+        </div>
+        <div class="ly-2">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/018/887/506/small_2x/shapes-vintage-labels-png.png"
+          />
+        </div>
+        <div class="ly-3">
+          <img
+            src="https://rohan-debayan.github.io/Personal_Website_DM/images/vitlogo.png"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="location-button" id="user-locate">
+      <button>
+        <img
+          src="-gps-fixed_90046.png"
+        />
+      </button>
+    </div>
+    <div class="clg-button" id="clg-locate">
+      <button>
+        <img src="129978-200.png" />
+      </button>
+    </div>
+    <div class="side-bar">
+      <div class="icon-holder">
+        <img src="vitlogo.svg" />
+      </div>
+      <div class="route-options">
+        <button class="Nearest route" id="nearest-routes">
+          <img src="3313834.png" />
+          <span><br />Nearest route</span>
+        </button>
+        <button class="All routes" id="all-routes">
+          <img src="route.svg" />
+          <span><br />All Routes</span>
+        </button>
+        <button class="AC routes" id="AC-routes">
+          <img
+            src="air-conditioner.png"
+          />
+          <span><br />AC Routes</span>
+        </button>
+        <button class="Non-AC routes" id="NON-AC-routes">
+          <img
+            src="no-air-conditioning-icon-style-free-vector.jpg"
+          />
+          <span><br />NON-AC</span>
+        </button>
+      </div>
+    </div>
+    <div class="wrapper-cont">
+      <div class="wrapper">
+        <div class="select-btn">
+          <span id="route-text">Select Route</span>
+          <i class="uil uil-angle-down"></i>
+        </div>
+        <div class="content">
+          <div class="search">
+            <i class="uil uil-search"></i>
+            <input spellcheck="false" type="text" placeholder="Search" />
+          </div>
+          <ul class="options"></ul>
+        </div>
+      </div>
+    </div>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@mapbox/polyline@1.0.0"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-ant-path/dist/leaflet-ant-path.min.js"></script>
+    <script src="SmoothWheelZoom.js"></script>
+    <script>
+      let locatorMarker;
+      const wrapper = document.querySelector(".wrapper"),
+      selectBtn = wrapper.querySelector(".select-btn"),
+      searchInp = wrapper.querySelector("input"),
+      options = wrapper.querySelector(".options");
+      let routes_names = [[],[]];
+      let stopIndexTemp;
+      colours = ["#800080","#e933ab","#39ff14","#dc143c","blue"];
+      var map;
+      const customStoppingIcon = L.icon({
+          iconUrl: 'BusStop.png', 
+          iconSize: [20, 20], 
+          iconAnchor: [10, 10], 
+          className: 'stopping-location-icon'
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+        var inputData = atob('<%= inputData %>');
+        console.log(inputData);
+        console.log("Data Type:", typeof inputData); 
+        inputData = JSON.parse(inputData);
+        console.log(inputData);
+        console.log("Input Data:", inputData); 
+        console.log("Data Type:", typeof inputData); 
+        ProcessData(inputData);
+        mapInit(); 
+        });
+
+
+      function decodePolyline(encoded) {
+          var points = [];
+          var index = 0, lat = 0, lng = 0;
+          while (index < encoded.length) {
+              var b, shift = 0, result = 0;
+              do {
+                  b = encoded.charCodeAt(index++) - 63;
+                  result |= (b & 0x1f) << shift;
+                  shift += 5;
+              } while (b >= 0x20);
+              var dlat = (result & 1) ? ~(result >> 1) : (result >> 1);
+              lat += dlat;
+
+              shift = 0;
+              result = 0;
+              do {
+                  b = encoded.charCodeAt(index++) - 63;
+                  result |= (b & 0x1f) << shift;
+                  shift += 5;
+              } while (b >= 0x20);
+              var dlng = (result & 1) ? ~(result >> 1) : (result >> 1);
+              lng += dlng;
+
+              points.push([lat / 1E5, lng / 1E5]);
+          }
+          return points;
+      }
+
+      function mapInit()
+      {
+          var route_box = document.getElementById('route-details');
+          route_box.style.display = "none";
+          if (map) {
+              map.remove();
+              userLocationMarker = null;
+              locatorMarker = null;
+          }
+
+          map = L.map('map',{zoomControl: false, minZoom: 10,scrollWheelZoom: false,
+              smoothWheelZoom: true,
+              smoothSensitivity: 1 }).setView([12.951593, 80.146214], 12);
+          map.scrollWheelZoom = true;
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+
+          L.marker([12.840309, 80.152963],{
+                  icon:L.icon({
+                      iconUrl: 'BlueCircle.png',
+                      iconSize: [75,75],
+                      className: 'vitc-background'
+                  })
+              }).addTo(map);
+
+              L.marker([12.840309, 80.152963],{
+                  icon:L.icon({
+                      iconUrl: 'gray-circle.webp',
+                      iconSize: [60,60],
+                      className: 'vitc-background-2'
+                  })
+              }).addTo(map);
+
+              L.marker([12.840309, 80.152963],{
+                  icon:L.icon({
+                      iconUrl: 'vitc.png',
+                      iconSize: [35,35],
+                      className: 'vitc-background-2'
+                  })
+              }).addTo(map);
+              if(map)
+                {
+                map.on('move', updateLocator);
+                }
+      }
+
+      function addRoute(selectedCountry) {
+          options.innerHTML = "";
+          routes_names[0].forEach(route => {
+              let isSelected = route == selectedCountry ? "selected" : "";
+              let li = `<li onclick="updateName(this)" class="${isSelected}">${route}</li>`;
+              options.insertAdjacentHTML("beforeend", li);
+          });
+      }
+
+
+      function updateName(selectedLi) {
+          searchInp.value = "";
+          addRoute(selectedLi.innerText);
+          wrapper.classList.remove("active");
+          selectBtn.firstElementChild.innerText = selectedLi.innerText;
+          index = routes_names[0].indexOf(selectedLi.innerText);
+          mapInit();
+          plotRoute(index);
+      }
+
+      function ProcessData(Data)
+      {
+          Data.forEach((element,index) => {
+              routes_names[0].push(element.routeNo + " : "+element.name);
+              routes_names[1].push(element.routeNo);
+          });
+          console.log(routes_names[0]);
+          addRoute();
+          data = Data;
+      }
+      function adjustMarkerSize() {
+          var zoomLevel = map.getZoom();
+          var scale = Math.pow(zoomLevel / 10, 1.5); 
+          var maxScale = 0.75;
+          var minScale = 0.75;
+          scale = Math.min(maxScale, Math.max(minScale, scale));
+          document.querySelectorAll('.custom-marker').forEach(function(marker) {
+              marker.style.fontSize = scale + 'em';
+              marker.style.padding = (scale * 0.5) + 'em';
+              marker.style.borderWidth = (scale * 0.2) + 'em';
+          });
+      }
+
+      function extractCoordinates(data) {
+        const coordinates = [];
+        const startPoint = data.startPoint;
+        coordinates.push([startPoint.lat, startPoint.long]);
+        data.stops.forEach(stop => {
+            coordinates.push([stop.lat, stop.long]);
+        });
+
+        const destination = data.destination;
+        coordinates.push([destination.lat, destination.long]);
+        return coordinates
+      }
+      function plotRoute(index) {
+          console.log(data[index].geometry);
+          if(data[index].geometry != null)
+          {
+            var latlngs = decodePolyline(data[index].geometry);
+          }
+          else
+          {
+            var latlngs = extractCoordinates(data[index]);
+          }
+          console.log(latlngs);
+          if(data[index].geometry != null)
+          {
+          L.polyline.antPath(latlngs, {
+              color:colours[(Math.floor(Math.random()*colours.length))] ,
+              dashArray: [20,20],
+              delay: 4000,
+              weight: 6,
+              hardwareAccelerated: true,
+          }).addTo(map);
+        }
+          var markerLabel = data[index].startPoint.name;
+          var markerIcon = L.divIcon({
+              className: 'custom-marker',
+              html: `<div class="marker-label">${markerLabel}</div>`,
+              iconSize: 'auto'
+          });
+
+          var marker = L.marker([data[index].startPoint.lat, data[index].startPoint.long], { icon: markerIcon })
+              .addTo(map);
+
+          var stopping_box_text =`<div class="status-cont"><button class="stop-but" id="stopButton-${1}" onclick="handleStopButton(${-1})">Edit</button><div class="lat-long-txt">Lat:${parseFloat(data[index].startPoint.lat).toFixed(5)} Long:${parseFloat(data[index].startPoint.long).toFixed(5)}</div><br></div>`;
+          data[index].stops.forEach((a, b) => {
+              stopping_box_text += `
+        Stopping-${b + 2} : ${a.name}<div class="status-cont"><button class="stop-but" id="stopButton-${b}" onclick="handleStopButton(${b})">Edit</button><div class="lat-long-txt">Lat:${parseFloat(a.lat).toFixed(5)} Long:${parseFloat(a.long).toFixed(5)}</div><br></div>`;
+              var stoppingMarker = L.marker([a.lat, a.long], { icon: customStoppingIcon })
+                  .addTo(map)
+                  .bindTooltip(a.name, {
+                      direction: 'right',
+                      offset: [10, 0],
+                      className: 'leaflet-tooltip'
+                  });
+
+              stoppingMarker.on('mouseover', function() {
+                  const tooltip = stoppingMarker.getTooltip().getElement();
+                  tooltip.classList.add('visible');
+              });
+
+              stoppingMarker.on('mouseout', function() {
+                  const tooltip = stoppingMarker.getTooltip().getElement();
+                  tooltip.classList.remove('visible');
+              });
+          });
+          stopping_box_text += `
+        <button class="conf-but" id="confButton" onclick="handleUpdateButton()">Update</button><div class="lat-long-txt" id="confText">Lat: Long:</div>`;
+          adjustMarkerSize();
+          var route_box = document.getElementById('route-details');
+          var main_box = document.getElementById('main-details');
+          var stopping_box = document.getElementById('stopping-details');
+          route_box.style.display = "flex";
+          main_box.innerHTML = 'Route Name : ' + data[index].name +'<br>Starting&nbsp;Point : '+data[index].startPoint.name;
+          stopping_box.innerHTML = stopping_box_text;
+          document.getElementById('confButton').style.display = "none";
+          document.getElementById('confText').style.display = "none";
+          map.on('zoomend', adjustMarkerSize);
+          var midpoint = L.latLng(
+              (data[index].destination.lat),
+              (data[index].destination.long)
+          );
+          map.flyTo(midpoint, 11)
+      }
+      function objectToArray(obj) {
+        return Object.entries(obj).map(([key, value]) => ({ key, value }));
+      }
+      function handleUpdateButton()
+      {
+        const center = map.getCenter();
+        if(stopIndexTemp == -1)
+        {
+            data[index].startPoint.lat = center.lat;
+            data[index].startPoint.long = center.lng;
+        }
+        else
+        {
+            data[index].stops[stopIndexTemp].lat = center.lat;
+            data[index].stops[stopIndexTemp].long = center.lng;
+        }
+        const newData = { ...data[index]};
+        delete newData["id"];
+        delete newData["geometry"];
+        newData.stops.forEach(stop => {
+            delete stop.id;
+            delete stop.routeId;
+            stop["lat"] = parseFloat(stop["lat"]);
+            stop["long"] = parseFloat(stop["long"]);
+        });
+        newData.startPoint["lat"] = parseFloat(newData.startPoint["lat"]);
+        newData.startPoint["long"] = parseFloat(newData.startPoint["long"]);
+        // const newData = {
+        //     routeNo:"9A",
+        //     routeId:"505",
+        //     name:"Poonamalle",
+        //     type:"NONAC",
+        //     stops:[{
+        //         name:"Karayanchavadi",
+        //         lat:13.047380628699885,
+        //         long:80.109635553246
+        //     },
+        //     {
+        //         name:"porur",
+        //         lat:13.036237000868617,
+        //         long: 80.14912287676385
+        //     },
+        //     {
+        //         name:"Gerugambakkam",
+        //         lat:13.011599342507768, 
+        //         long: 80.1288963376111
+        //     },
+        //     {
+        //         name:"Kamarajapuram",
+        //         lat:12.971820296089376, 
+        //         long: 80.11849074643403
+        //     },
+        //     {
+        //         name:"Tiruneermalai",
+        //         lat:12.957483031180852, 
+        //         long:80.11939149942077
+        //     },
+        //     {
+        //         name:"Thambaram",
+        //         lat:12.92574814260217, 
+        //         long:80.10034995323802
+        //     },
+        //     {
+        //         name:"Vandalur",
+        //         lat:12.879626716612924, 
+        //         long:80.08007905737011
+        //     },
+        //     {
+        //         name:"VIT CHENNAI",
+        //         lat:12.840561042795008,
+        //         long:80.15310348748496
+        //     }]
+        // }
+        fetch('/routes',{method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify(newData)})
+        .then(response => response.json())
+        .then(data => console.log("Success"))
+        .catch(error => console.log("Error"));
+        console.log(newData);
+        mapInit();
+        plotRoute(index);
+      }
+
+      function handleStopButton(stopIndex) 
+      {
+          alert("Button clicked for Stopping-" + (stopIndex + 2));
+          document.getElementById('confButton').style.display = "flex";
+          document.getElementById('confText').style.display = "flex";
+          stopIndexTemp = stopIndex;
+          if (!locatorMarker) {
+            locatorMarker = L.marker(map.getCenter(), {
+            icon: L.icon({
+                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41]
+            })
+            }).addTo(map);
+        }
+        updateLocator();
+      }
+      function updateLocator() {
+        if(locatorMarker) {
+            const center = map.getCenter();
+            locatorMarker.setLatLng(center);
+            var latlongtxt = document.getElementById("confText");
+            latlongtxt.innerHTML = `Lat:${center.lat.toFixed(5)} Long:${center.lng.toFixed(5)}`;
+        }
+      }
+      function loadingOn(txt)
+      {
+          document.getElementById('loading-screen').style.display = 'flex';
+          if (txt !== undefined) {
+              let tbox = document.getElementById('route-text');
+              tbox.textContent = txt;
+          }
+      }
+      function loadingOff()
+      {
+          document.getElementById('loading-screen').style.display = 'none';
+      }
+
+
+      function plotAllRoutes()
+      {
+          mapInit();
+          loadingOn("All Routes");
+          data.forEach((routes,index) => {
+              var markerLabel = routes.name;
+              var markerIcon = L.divIcon({
+                  className: 'custom-marker',
+                  html: `<div class="marker-label">${markerLabel}</div>`,
+                  iconSize: 'auto' 
+              });
+              var marker = L.marker([routes.startPoint.lat, routes.startPoint.long], { icon: markerIcon })
+              .addTo(map);
+              var latlngs = decodePolyline(routes.geometry);
+              L.polyline.antPath(latlngs, {
+                  color: colours[(Math.floor(Math.random() * colours.length))] ,
+                  dashArray: [20,20],
+                  delay: 4000,
+                  weight: 4,
+                  hardwareAccelerated: true,
+                  zIndex: index+1000
+              }).addTo(map);
+              map.on('zoomend', adjustMarkerSize);
+          });
+          loadingOff();
+      }
+
+      function plotByAC(condition)
+      {
+          mapInit();
+          loadingOn(condition+" Routes");
+          data.forEach((routes,index) => {
+              if(routes.type == condition)
+              {
+                  console.log(routes.type);
+                  var latlngs = decodePolyline(routes.geometry);
+                  L.polyline.antPath(latlngs, {
+                      color:colours[(Math.floor(Math.random()*colours.length))] ,
+                      dashArray: [20,20],
+                      delay: 4000,
+                      weight: 5,
+                      hardwareAccelerated: true,
+                  }).addTo(map);
+                  var markerLabel = routes.name;
+                  var markerIcon = L.divIcon({
+                  className: 'custom-marker',
+                  html: `<div class="marker-label">${markerLabel}</div>`,
+                  iconSize: 'auto' 
+              });
+              var marker = L.marker([routes.startPoint.lat, routes.startPoint.long], { icon: markerIcon })
+              .addTo(map);
+              }
+          });
+          loadingOff();
+      }
+
+      function getUserLoc(callback) {
+          var userLocationMarker = null;
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                  userlat = position.coords.latitude;
+                  userlng = position.coords.longitude;
+
+                  console.log("User Latitude:", userlat);
+                  console.log("User Longitude:", userlng);
+
+                  if (userLocationMarker) {
+                      userLocationMarker.setLatLng([userlat, userlng]);
+                  } else {
+                      userLocationMarker = L.marker([userlat, userlng], {
+                          icon: L.divIcon({
+                              className: 'user-location-icon',
+                              iconSize: [24, 24],
+                          })
+                      }).addTo(map);
+                  }
+
+                  if (callback) {
+                      callback(userlat, userlng);
+                  }
+              }, function() {
+                  alert('Unable to retrieve your location.');
+                  if (callback) {
+                      callback(null, null);
+                  }
+              }, {
+                  enableHighAccuracy: true, 
+                  timeout: 5000, 
+                  maximumAge: 0 
+              });
+          } else {
+              alert('Geolocation is not supported by this browser.');
+              if (callback) {
+                  callback(null, null);
+              }
+          }
+      }
+
+
+      function distance(lat1,long1,lat2,long2)
+      {
+          return(Math.sqrt(Math.pow(lat2 - lat1, 2) + Math.pow(long2 - long1, 2)));
+      }
+      function findNearest()
+      {
+          mapInit();
+          loadingOn("Nearest Route");
+          let usr_flg = false;
+          getUserLoc(function(userlat, userlng) {
+              if (userlat && userlng) {
+                  var min_distance = Infinity
+                  data.forEach((routes, index) => {
+                      startLat = routes.startPoint.lat;
+                      startLng = routes.startPoint.long;
+                      if(distance(userlat,userlng,startLat,startLng) < min_distance)
+                      {
+                          min_distance = distance(userlat,userlng,startLat,startLng);
+                          RIndex = index;
+                          RSubIndex = -1;
+                          deslat = startLat;
+                          deslng = startLng;
+                      }
+                      routes.stops.forEach((route,rindex) => {
+                          startLat = route.lat;
+                          startLng = route.long;
+                          if(distance(userlat,userlng,startLat,startLng) < min_distance)
+                          {
+                              min_distance = distance(userlat,userlng,startLat,startLng);
+                              RIndex = index;
+                              RSubIndex = rindex;
+                              deslat = startLat;
+                              deslng = startLng;
+                          }
+                      });
+                  });
+
+              } else {
+                  console.log("User location not available. Skipping nearest route calculation.");
+                  loadingOff();
+              }
+              plotRoute(RIndex);
+              var latlngs = [[userlat,userlng],[deslat,deslng]];
+              L.polyline(latlngs, {
+                  color: 'red',
+                  weight: 3,
+                  opacity: 1,
+                  className: 'dashed-line'
+              }).addTo(map);
+              var pointA = L.latLng(latlngs[0]);
+              var pointB = L.latLng(latlngs[1]);
+              var dist = pointA.distanceTo(pointB).toFixed(2)/1000;
+              var midpoint = L.latLng(
+                  (pointA.lat + pointB.lat) / 2,
+                  (pointA.lng + pointB.lng) / 2
+              );
+
+
+              var distanceLabel = L.divIcon({
+                  className: 'distance-label',
+                  html: '<div>' + dist.toFixed(2) + ' Km</div>'
+              });
+
+              var angle = Math.atan2(pointB.lat - pointA.lat, pointB.lng - pointA.lng) * (180 / Math.PI);
+
+              L.marker(midpoint, {
+                  iconSize: null,
+                  icon: distanceLabel
+              }).addTo(map);
+              loadingOff();
+          });
+      }
+
+      selectBtn.addEventListener("click", () => wrapper.classList.toggle("active"));
+
+      searchInp.addEventListener("keyup", () => {
+          let arr = [];
+          let searchWord = searchInp.value.toLowerCase();
+          arr = routes_names[0].filter(data => {
+              const busNo=data.toLowerCase().split(":")[0].trim();
+              const Name=data.toLowerCase().split(":")[1].trim();
+              return Name.startsWith(searchWord) || busNo.startsWith(searchWord);
+          }).map(data => {
+              let isSelected = data == selectBtn.firstElementChild.innerText ? "selected" : "";
+              return `<li onclick="updateName(this)" class="${isSelected}">${data}</li>`;
+          }).join("");
+          options.innerHTML = arr ? arr : `<p style="margin-top: 10px;">Oops! Country not found</p>`;
+      });
+      document.getElementById("all-routes").onclick = function() {
+          plotAllRoutes();
+      };
+
+      document.getElementById("AC-routes").onclick = function() {
+          plotByAC("AC");
+      };
+
+      document.getElementById("NON-AC-routes").onclick = function() {
+          plotByAC("NONAC");
+      };
+
+      document.getElementById("nearest-routes").onclick = function() {
+          findNearest();
+      };
+
+      document.getElementById("clg-locate").onclick = function() {
+          map.flyTo([12.951593, 80.146214], 11);
+
+      };
+
+      document.getElementById("user-locate").onclick = function() {
+          var userPoint = document.getElementsByClassName('user-location-icon');
+          if(!userPoint[0])
+          {
+              getUserLoc(function(userlat,userlong) {
+                  map.flyTo([userlat, userlong], 14);
+              });
+          }
+          else
+          {
+              map.flyTo([userlat, userlng], 14);
+          }
+      };
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="route-details" id="route-details">
+      <div class="main-details" id="main-details"></div>
+      <div class="stopping-details" id="stopping-details"></div>
+    </div>
+  </body>
+</html>
