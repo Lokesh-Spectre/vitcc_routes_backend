@@ -36,21 +36,24 @@
     display: none;
 }
 .ly-1 {
-    height: 40%; 
-    width: auto;   
+    height: 250px; 
+    width: 250px;   
     z-index: 1;     
+    top: 30%;
 }
 
 .ly-2 {
-    height: 35%;  /* Customize height */
-    width: auto;   /* Customize width */
+    height: 220px;  /* Customize height */
+    width: 220px;   /* Customize width */
     z-index: 2;     /* Ensure correct stacking order */
+    top: 32%;         /* Stacking directly on top of .ly-1 */
 }
 
 .ly-3 {
-    height: 20%;  /* Customize height */
-    width: auto;   /* Customize width */
+    height: 115px;  /* Customize height */
+    width: 115px;   /* Customize width */
     z-index: 3;     /* Ensure correct stacking order */
+    top: 39%;         /* Stacking directly on top of .ly-2 */
 }
 
 .ly-1 img,
@@ -108,7 +111,6 @@
 .wrapper.active .content{
   display: block;
 }
-
 .content .search{
   position: relative;
 }
@@ -136,38 +138,6 @@
 }
 .search input::placeholder{
   color: #bfbfbf;
-}
-.stop-but {
-    background-color: #007bff; 
-    color: white;
-    border: none; 
-    padding: 5px 10px;
-    font-size: 14px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    margin-left: 10px; 
-}
-.status-cont
-{
-    display: flex;
-    flex-direction: row;
-}
-.lat-long-txt
-{
-    margin-left: 10px;
-    font-size: 13px;
-    color: gray;
-}
-.conf-but
-{
-    background-color: #05961d; 
-    color: white;
-    border: none; 
-    padding: 5px 10px;
-    font-size: 14px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    margin-left: 10px; 
 }
 .content .options{
   margin-top: 10px;
@@ -227,8 +197,7 @@
 .stopping-details
 {
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     line-height: 35px;
     height: auto;
@@ -362,6 +331,18 @@
             transition: opacity 0.6s ease-in-out;
           }
 
+        .wrapper-cont
+        {
+            width:100%;
+            position: fixed;
+            z-index: 1110;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 4%;
+            right: 5%;
+        }
         .side-bar
         {
             background-color: white;
@@ -417,33 +398,6 @@
             height: auto;
             transition: all 0.4s linear;
         }
-        .options li{
-            height: 50px;
-            padding: 0 13px;
-            font-size: 10px;
-          }
-          .wrapper-cont
-        {
-            width:100%;
-            position: fixed;
-            z-index: 99999;
-            background-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            top: 5.5%;
-            margin: 0;
-            padding: 0;
-
-        }
-        .wrapper.active {
-            width: 85%;
-            margin: 0;
-            padding: 0;
-          }
-          .select-btn span{
-            font-size: 8px;
-          }
         .location-button
         {
             display: flex;
@@ -504,7 +458,6 @@
             height: auto;
             transform: translateY(1%);
         }
-        
         @media only screen and (max-width: 700px)  {
         .icon-holder
         {
@@ -558,7 +511,8 @@
             padding-left: 10px;
             padding-right: 10px;
             max-height: 60%;
-            overflow: auto; 
+            max-width: 100%; /* Ensures the box doesn't exceed the viewport width */
+            overflow: auto; /* Adds scrollbars if content exceeds the box */
         }
         
         .main-details {
@@ -573,7 +527,7 @@
         
         .stopping-details {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             font-size: 1.7vw;
             line-height: 15px;
@@ -582,34 +536,7 @@
             margin-bottom: 5%;
             margin-top: 5%;
         }
-        .conf-but
-        {
-            background-color: #05961d; 
-            color: white;
-            border: none; 
-            padding: 3px 6px;
-            font-size: 9px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-left: 10px; 
-        }
-        .lat-long-txt
-        {
-            margin-left: 10px;
-            font-size: 6px;
-            color: gray;
-        }
-        .stop-but {
-            background-color: #007bff; 
-            color: white;
-            height: 1%;
-            border: none; 
-            padding: 2px 5px;
-            font-size: 7px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-left: 10px; 
-        }
+        
         .side-bar
         {
             background-color: white;
@@ -668,5 +595,43 @@
             border-radius: 20px;
             justify-content: space-between;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    }
+    @media only screen and (max-height: 650px)  {
+        
+        .side-bar
+        {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLljzuZRwwvegJ4lBYMgpF6A4DYbNG2ZhT590UYTrFP2X1gFWEWkTjXMSrgKBkReb-DE0&usqp=CAU');
+            background-color: white;
+            position: fixed;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 80%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 6000;
+        }
+        .icon-holder
+        {
+            display: none;
+        }
+        .route-options button
+        {
+            display: none;
+        }
+        .res-error
+        {
+            display: flex;
+            width: 100%;
+            height: 20%;
+            background-color: white;
+            z-index: 7000;
+            position: fixed;
+            bottom: 0;
+            align-items: center;
+            justify-content: center;
+
         }
     }

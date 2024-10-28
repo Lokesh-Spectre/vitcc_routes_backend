@@ -36,21 +36,24 @@
     display: none;
 }
 .ly-1 {
-    height: 40%; 
-    width: auto;   
+    height: 250px; 
+    width: 250px;   
     z-index: 1;     
+    top: 30%;
 }
 
 .ly-2 {
-    height: 35%;  /* Customize height */
-    width: auto;   /* Customize width */
+    height: 220px;  /* Customize height */
+    width: 220px;   /* Customize width */
     z-index: 2;     /* Ensure correct stacking order */
+    top: 32%;         /* Stacking directly on top of .ly-1 */
 }
 
 .ly-3 {
-    height: 20%;  /* Customize height */
-    width: auto;   /* Customize width */
+    height: 115px;  /* Customize height */
+    width: 115px;   /* Customize width */
     z-index: 3;     /* Ensure correct stacking order */
+    top: 39%;         /* Stacking directly on top of .ly-2 */
 }
 
 .ly-1 img,
@@ -72,9 +75,9 @@
     animation: fade 0.7s infinite alternate;
 }
 .wrapper{
-  width: 80%;
-  margin-left: 120px;
+  width: 70%;
   background-color: transparent;
+
 }
 .select-btn, li{
   display: flex;
@@ -108,7 +111,6 @@
 .wrapper.active .content{
   display: block;
 }
-
 .content .search{
   position: relative;
 }
@@ -123,7 +125,7 @@
 }
 .search input{
   height: 50px;
-  width: 100%;
+  width: 80%;
   outline: none;
   font-size: 17px;
   border-radius: 5px;
@@ -136,38 +138,6 @@
 }
 .search input::placeholder{
   color: #bfbfbf;
-}
-.stop-but {
-    background-color: #007bff; 
-    color: white;
-    border: none; 
-    padding: 5px 10px;
-    font-size: 14px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    margin-left: 10px; 
-}
-.status-cont
-{
-    display: flex;
-    flex-direction: row;
-}
-.lat-long-txt
-{
-    margin-left: 10px;
-    font-size: 13px;
-    color: gray;
-}
-.conf-but
-{
-    background-color: #05961d; 
-    color: white;
-    border: none; 
-    padding: 5px 10px;
-    font-size: 14px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    margin-left: 10px; 
 }
 .content .options{
   margin-top: 10px;
@@ -197,44 +167,6 @@
 .options li:hover, li.selected{
   border-radius: 5px;
   background: #f2f2f2;
-}
-.route-details
-{
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    width: 400px;
-    background-color: white;
-    z-index: 1999;
-    position: fixed;
-    right: 5%;
-    top: 15%;
-    border-radius: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.main-details
-{
-    text-align: center;
-    height: 20%;
-    width: auto;
-    margin-top: 5%;
-    font-weight: bold;
-    line-height: 35px;
-}
-.stopping-details
-{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    line-height: 35px;
-    height: auto;
-    width: 100%;
-    margin-bottom: 5%;
-    margin-top: 5%;
 }
         #map {
             height: 100vh;
@@ -288,7 +220,6 @@
             position: relative;
             display: inline-block;
         }
-        
         .user-location-icon:before {
             content: '';
             position: absolute;
@@ -298,76 +229,25 @@
             height: 16px;
             background: #4285F4; 
             border-radius: 50%;
-            transform: scale(0);
-            animation: grow 0.9s ease-in-out forwards;
         }
-        .custom-marker {
-            display: inline-block;
-            padding: 0.4em;
-            background-color: #ffffff;
-            border: 0.2em solid #007bff;
-            border-radius: 0.4em;
-            color: #333333;
-            font-size: 1em;
-            text-align: center;
-            box-shadow: 0 0 0.6em rgba(0,0,0,0.3);
-        }
-        
-        .custom-marker .marker-label {
-            display: block;
-            padding: 0.2em 0.4em;
-            font-weight: bold;
-        }
-        .dashed-line {
-            stroke-dasharray: 10, 10; /* Pattern for the dashes and gaps */
-        }
-        .distance-label {
+        .wrapper-cont
+        {
+            width:100%;
+            position: fixed;
+            z-index: 1110;
+            background-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: white;
-            border: 1px solid red;
-            padding-left: 50px;
-            padding-right: 50px;
-            padding-top:7px;
-            padding-bottom:7px;
-            border-radius: 3px;
-            font-size: 12px;
-            text-align: center; /* Center the text horizontally */
-            line-height: 30px; /* Center the text vertically */
-            transform: translateX(-50px);
-            transform-origin: center center;
-            overflow: hidden; /* Ensure text doesn't overflow the box */
-            white-space: nowrap; /* Prevent text wrapping */
+            top: 4%;
+            right: 5%;
         }
-        @keyframes grow {
-            0% {
-                transform: scale(0);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        .leaflet-tooltip {
-            opacity: 0.5; /* Start as hidden */
-            font-weight: bold;
-            transition: opacity 0.6s ease-in-out; /* Smooth transition for opacity */
-          }
-        
-          .leaflet-tooltip.visible {
-            opacity: 1; /* Fully visible */
-            transition: opacity 0.6s ease-in-out;
-          }
-
         .side-bar
         {
             background-color: white;
             position: fixed;
             height: 100%;
-            width: 110px;
+            width: 7%;
             top: 0;
             left: 0;
             z-index: 1500;
@@ -396,10 +276,9 @@
         .route-options button
         {
             width: 100%;
-            height: auto;
+            height: 5vw;
             background-color: transparent;
             border: none;
-            padding: 5px;
         }
         .route-options button:hover
         {
@@ -417,33 +296,6 @@
             height: auto;
             transition: all 0.4s linear;
         }
-        .options li{
-            height: 50px;
-            padding: 0 13px;
-            font-size: 10px;
-          }
-          .wrapper-cont
-        {
-            width:100%;
-            position: fixed;
-            z-index: 99999;
-            background-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            top: 5.5%;
-            margin: 0;
-            padding: 0;
-
-        }
-        .wrapper.active {
-            width: 85%;
-            margin: 0;
-            padding: 0;
-          }
-          .select-btn span{
-            font-size: 8px;
-          }
         .location-button
         {
             display: flex;
@@ -504,20 +356,7 @@
             height: auto;
             transform: translateY(1%);
         }
-        
         @media only screen and (max-width: 700px)  {
-        .icon-holder
-        {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .icon-holder img
-        {
-            width: 70%;
-            height: auto;
-        }
         .clg-button
         {
             display: flex;
@@ -542,74 +381,6 @@
             bottom: -10%;
             
         }
-        .route-details {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: auto;
-            width: 35vw;
-            background-color: white;
-            z-index: 1999;
-            position: fixed;
-            right: 5%;
-            top: 15%;
-            border-radius: 15px;
-            padding-left: 10px;
-            padding-right: 10px;
-            max-height: 60%;
-            overflow: auto; 
-        }
-        
-        .main-details {
-            text-align: center;
-            height: 20%;
-            width: auto;
-            margin-top: 5%;
-            font-weight: bold;
-            line-height: 20px;
-            font-size: 2vw;
-        }
-        
-        .stopping-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            font-size: 1.7vw;
-            line-height: 15px;
-            height: auto;
-            width: 100%;
-            margin-bottom: 5%;
-            margin-top: 5%;
-        }
-        .conf-but
-        {
-            background-color: #05961d; 
-            color: white;
-            border: none; 
-            padding: 3px 6px;
-            font-size: 9px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-left: 10px; 
-        }
-        .lat-long-txt
-        {
-            margin-left: 10px;
-            font-size: 6px;
-            color: gray;
-        }
-        .stop-but {
-            background-color: #007bff; 
-            color: white;
-            height: 1%;
-            border: none; 
-            padding: 2px 5px;
-            font-size: 7px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-left: 10px; 
-        }
         .side-bar
         {
             background-color: white;
@@ -628,18 +399,15 @@
         {
             display: flex;
             height: 50%;
-            margin-top: 15px;
+            margin-top: 20px;
             flex-direction: row;
             justify-content: space-evenly;
         }
         .route-options button
         {
-            width: 25vw;
+            width: 80%;
             background-color: transparent;
             border: none;
-            height: 85%;
-            padding: 4px;
-            padding-bottom: 8px;
         }
         .route-options button:hover
         {
@@ -668,5 +436,43 @@
             border-radius: 20px;
             justify-content: space-between;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    }
+    @media only screen and (max-height: 650px)  {
+        
+        .side-bar
+        {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLljzuZRwwvegJ4lBYMgpF6A4DYbNG2ZhT590UYTrFP2X1gFWEWkTjXMSrgKBkReb-DE0&usqp=CAU');
+            background-color: white;
+            position: fixed;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 80%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 6000;
+        }
+        .icon-holder
+        {
+            display: none;
+        }
+        .route-options button
+        {
+            display: none;
+        }
+        .res-error
+        {
+            display: flex;
+            width: 100%;
+            height: 20%;
+            background-color: white;
+            z-index: 7000;
+            position: fixed;
+            bottom: 0;
+            align-items: center;
+            justify-content: center;
+
         }
     }
