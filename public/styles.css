@@ -108,6 +108,7 @@
 .wrapper.active .content{
   display: block;
 }
+
 .content .search{
   position: relative;
 }
@@ -361,18 +362,6 @@
             transition: opacity 0.6s ease-in-out;
           }
 
-        .wrapper-cont
-        {
-            width:100%;
-            position: fixed;
-            z-index: 1110;
-            background-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            top: 4%;
-            right: 5%;
-        }
         .side-bar
         {
             background-color: white;
@@ -428,6 +417,33 @@
             height: auto;
             transition: all 0.4s linear;
         }
+        .options li{
+            height: 50px;
+            padding: 0 13px;
+            font-size: 10px;
+          }
+          .wrapper-cont
+        {
+            width:100%;
+            position: fixed;
+            z-index: 99999;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 5.5%;
+            margin: 0;
+            padding: 0;
+
+        }
+        .wrapper.active {
+            width: 85%;
+            margin: 0;
+            padding: 0;
+          }
+          .select-btn span{
+            font-size: 8px;
+          }
         .location-button
         {
             display: flex;
@@ -488,6 +504,7 @@
             height: auto;
             transform: translateY(1%);
         }
+        
         @media only screen and (max-width: 700px)  {
         .icon-holder
         {

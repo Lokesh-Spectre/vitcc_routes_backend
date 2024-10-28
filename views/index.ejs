@@ -243,7 +243,6 @@
               marker.style.borderWidth = (scale * 0.2) + 'em';
           });
       }
-
       function extractCoordinates(data) {
         const coordinates = [];
         const startPoint = data.startPoint;
@@ -251,11 +250,11 @@
         data.stops.forEach(stop => {
             coordinates.push([stop.lat, stop.long]);
         });
-
         const destination = data.destination;
         coordinates.push([destination.lat, destination.long]);
-        return coordinates
-      }
+
+        return coordinates;
+        }
       function plotRoute(index) {
           console.log(data[index].geometry);
           if(data[index].geometry != null)
@@ -264,10 +263,17 @@
           }
           else
           {
-            var latlngs = extractCoordinates(data[index]);
+            var latlngs = extractCoordinates(data[index])
           }
           console.log(latlngs);
-          if(data[index].geometry != null)
+          var cond = true
+          latlngs.forEach(val => {
+            if((val[0] == 0 && val[1] == 0) || (val[0] == '0' && val[1] == '0'))
+          {
+            cond = false;
+          }
+          });
+          if(cond)
           {
           L.polyline.antPath(latlngs, {
               color:colours[(Math.floor(Math.random()*colours.length))] ,
@@ -322,8 +328,8 @@
           document.getElementById('confText').style.display = "none";
           map.on('zoomend', adjustMarkerSize);
           var midpoint = L.latLng(
-              (data[index].destination.lat),
-              (data[index].destination.long)
+              (data[index].destination.lat) ,
+              (data[index].destination.long) 
           );
           map.flyTo(midpoint, 11)
       }
@@ -669,6 +675,7 @@
               map.flyTo([userlat, userlng], 14);
           }
       };
+
     </script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>

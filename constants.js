@@ -17,7 +17,7 @@ server.osrmBackendUrl="https://router.project-osrm.org";
 server.PORT=3000;
 server.mode="PROD" // DEV or PROD
 server.poll_url=server.mode == "PROD"?"https://apicc.vit.ac.in/transportApi/getTransportDetails":`http://localhost:${server.PORT}/pollSampleData`;
-server.poll_cronSchedule = server.mode=="PROD"? "0 0 * * *" : "*/10 * * * * *"; // poll every day 12pm in production, poll every 10 seconds in development
+server.poll_cronSchedule = server.mode=="DEV"? "0 0 * * *" : "*/10 * * * * *"; // poll every day 12pm in production, poll every 10 seconds in development
 server.logs={}
 // server.mode="PROD"
 // server.osrmBackendUrl="http://localhost:5000";
