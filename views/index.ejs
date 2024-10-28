@@ -97,20 +97,13 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-ant-path/dist/leaflet-ant-path.min.js"></script>
     <script src="SmoothWheelZoom.js"></script>
     <script>
-<<<<<<< HEAD
       let locatorMarker;
       const wrapper = document.querySelector(".wrapper"),
-=======
-          const wrapper = document.querySelector(".wrapper"),
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       selectBtn = wrapper.querySelector(".select-btn"),
       searchInp = wrapper.querySelector("input"),
       options = wrapper.querySelector(".options");
       let routes_names = [[],[]];
-<<<<<<< HEAD
       let stopIndexTemp;
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       colours = ["#800080","#e933ab","#39ff14","#dc143c","blue"];
       var map;
       const customStoppingIcon = L.icon({
@@ -168,10 +161,7 @@
           if (map) {
               map.remove();
               userLocationMarker = null;
-<<<<<<< HEAD
               locatorMarker = null;
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           }
 
           map = L.map('map',{zoomControl: false, minZoom: 10,scrollWheelZoom: false,
@@ -205,13 +195,10 @@
                       className: 'vitc-background-2'
                   })
               }).addTo(map);
-<<<<<<< HEAD
               if(map)
                 {
                 map.on('move', updateLocator);
                 }
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       }
 
       function addRoute(selectedCountry) {
@@ -256,7 +243,6 @@
               marker.style.borderWidth = (scale * 0.2) + 'em';
           });
       }
-<<<<<<< HEAD
 
       function extractCoordinates(data) {
         const coordinates = [];
@@ -283,12 +269,6 @@
           console.log(latlngs);
           if(data[index].geometry != null)
           {
-=======
-      function plotRoute(index) {
-          console.log(data[index].geometry);
-          var latlngs = decodePolyline(data[index].geometry);
-          console.log(latlngs);
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           L.polyline.antPath(latlngs, {
               color:colours[(Math.floor(Math.random()*colours.length))] ,
               dashArray: [20,20],
@@ -296,10 +276,7 @@
               weight: 6,
               hardwareAccelerated: true,
           }).addTo(map);
-<<<<<<< HEAD
         }
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           var markerLabel = data[index].startPoint.name;
           var markerIcon = L.divIcon({
               className: 'custom-marker',
@@ -310,16 +287,10 @@
           var marker = L.marker([data[index].startPoint.lat, data[index].startPoint.long], { icon: markerIcon })
               .addTo(map);
 
-<<<<<<< HEAD
           var stopping_box_text =`<div class="status-cont"><button class="stop-but" id="stopButton-${1}" onclick="handleStopButton(${-1})">Edit</button><div class="lat-long-txt">Lat:${parseFloat(data[index].startPoint.lat).toFixed(5)} Long:${parseFloat(data[index].startPoint.long).toFixed(5)}</div><br></div>`;
           data[index].stops.forEach((a, b) => {
               stopping_box_text += `
         Stopping-${b + 2} : ${a.name}<div class="status-cont"><button class="stop-but" id="stopButton-${b}" onclick="handleStopButton(${b})">Edit</button><div class="lat-long-txt">Lat:${parseFloat(a.lat).toFixed(5)} Long:${parseFloat(a.long).toFixed(5)}</div><br></div>`;
-=======
-          var stopping_box_text ="";
-          data[index].stops.forEach((a, b) => {
-              stopping_box_text += ("Stopping-"+(b+2)+" : "+a.name+"<br>");
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
               var stoppingMarker = L.marker([a.lat, a.long], { icon: customStoppingIcon })
                   .addTo(map)
                   .bindTooltip(a.name, {
@@ -338,11 +309,8 @@
                   tooltip.classList.remove('visible');
               });
           });
-<<<<<<< HEAD
           stopping_box_text += `
         <button class="conf-but" id="confButton" onclick="handleUpdateButton()">Update</button><div class="lat-long-txt" id="confText">Lat: Long:</div>`;
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           adjustMarkerSize();
           var route_box = document.getElementById('route-details');
           var main_box = document.getElementById('main-details');
@@ -350,7 +318,6 @@
           route_box.style.display = "flex";
           main_box.innerHTML = 'Route Name : ' + data[index].name +'<br>Starting&nbsp;Point : '+data[index].startPoint.name;
           stopping_box.innerHTML = stopping_box_text;
-<<<<<<< HEAD
           document.getElementById('confButton').style.display = "none";
           document.getElementById('confText').style.display = "none";
           map.on('zoomend', adjustMarkerSize);
@@ -467,16 +434,6 @@
             latlongtxt.innerHTML = `Lat:${center.lat.toFixed(5)} Long:${center.lng.toFixed(5)}`;
         }
       }
-=======
-          map.on('zoomend', adjustMarkerSize);
-          var midpoint = L.latLng(
-              (13.014433 + data[index].startPoint.lat) / 2,
-              (80.224255 + data[index].startPoint.long) / 2
-          );
-          map.flyTo(midpoint, 11)
-      }
-
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       function loadingOn(txt)
       {
           document.getElementById('loading-screen').style.display = 'flex';
@@ -712,10 +669,6 @@
               map.flyTo([userlat, userlng], 14);
           }
       };
-<<<<<<< HEAD
-
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
     </script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>

@@ -108,10 +108,6 @@
 .wrapper.active .content{
   display: block;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
 .content .search{
   position: relative;
 }
@@ -140,7 +136,6 @@
 .search input::placeholder{
   color: #bfbfbf;
 }
-<<<<<<< HEAD
 .stop-but {
     background-color: #007bff; 
     color: white;
@@ -173,8 +168,6 @@
     cursor: pointer; 
     margin-left: 10px; 
 }
-=======
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
 .content .options{
   margin-top: 10px;
   max-height: 250px;
@@ -233,12 +226,8 @@
 .stopping-details
 {
     display: flex;
-<<<<<<< HEAD
     align-items: center;
     flex-direction: column;
-=======
-    flex-direction: row;
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
     justify-content: center;
     line-height: 35px;
     height: auto;
@@ -552,12 +541,7 @@
             padding-left: 10px;
             padding-right: 10px;
             max-height: 60%;
-<<<<<<< HEAD
             overflow: auto; 
-=======
-            max-width: 100%; /* Ensures the box doesn't exceed the viewport width */
-            overflow: auto; /* Adds scrollbars if content exceeds the box */
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         }
         
         .main-details {
@@ -572,11 +556,7 @@
         
         .stopping-details {
             display: flex;
-<<<<<<< HEAD
             flex-direction: column;
-=======
-            flex-direction: row;
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
             justify-content: center;
             font-size: 1.7vw;
             line-height: 15px;
@@ -585,7 +565,6 @@
             margin-bottom: 5%;
             margin-top: 5%;
         }
-<<<<<<< HEAD
         .conf-but
         {
             background-color: #05961d; 
@@ -614,9 +593,6 @@
             cursor: pointer; 
             margin-left: 10px; 
         }
-=======
-        
->>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         .side-bar
         {
             background-color: white;
