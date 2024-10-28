@@ -97,11 +97,20 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-ant-path/dist/leaflet-ant-path.min.js"></script>
     <script src="SmoothWheelZoom.js"></script>
     <script>
+<<<<<<< HEAD
+      let locatorMarker;
+      const wrapper = document.querySelector(".wrapper"),
+=======
           const wrapper = document.querySelector(".wrapper"),
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       selectBtn = wrapper.querySelector(".select-btn"),
       searchInp = wrapper.querySelector("input"),
       options = wrapper.querySelector(".options");
       let routes_names = [[],[]];
+<<<<<<< HEAD
+      let stopIndexTemp;
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       colours = ["#800080","#e933ab","#39ff14","#dc143c","blue"];
       var map;
       const customStoppingIcon = L.icon({
@@ -159,6 +168,10 @@
           if (map) {
               map.remove();
               userLocationMarker = null;
+<<<<<<< HEAD
+              locatorMarker = null;
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           }
 
           map = L.map('map',{zoomControl: false, minZoom: 10,scrollWheelZoom: false,
@@ -192,6 +205,13 @@
                       className: 'vitc-background-2'
                   })
               }).addTo(map);
+<<<<<<< HEAD
+              if(map)
+                {
+                map.on('move', updateLocator);
+                }
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       }
 
       function addRoute(selectedCountry) {
@@ -236,10 +256,39 @@
               marker.style.borderWidth = (scale * 0.2) + 'em';
           });
       }
+<<<<<<< HEAD
+
+      function extractCoordinates(data) {
+        const coordinates = [];
+        const startPoint = data.startPoint;
+        coordinates.push([startPoint.lat, startPoint.long]);
+        data.stops.forEach(stop => {
+            coordinates.push([stop.lat, stop.long]);
+        });
+
+        const destination = data.destination;
+        coordinates.push([destination.lat, destination.long]);
+        return coordinates
+      }
+      function plotRoute(index) {
+          console.log(data[index].geometry);
+          if(data[index].geometry != null)
+          {
+            var latlngs = decodePolyline(data[index].geometry);
+          }
+          else
+          {
+            var latlngs = extractCoordinates(data[index]);
+          }
+          console.log(latlngs);
+          if(data[index].geometry != null)
+          {
+=======
       function plotRoute(index) {
           console.log(data[index].geometry);
           var latlngs = decodePolyline(data[index].geometry);
           console.log(latlngs);
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           L.polyline.antPath(latlngs, {
               color:colours[(Math.floor(Math.random()*colours.length))] ,
               dashArray: [20,20],
@@ -247,6 +296,10 @@
               weight: 6,
               hardwareAccelerated: true,
           }).addTo(map);
+<<<<<<< HEAD
+        }
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           var markerLabel = data[index].startPoint.name;
           var markerIcon = L.divIcon({
               className: 'custom-marker',
@@ -257,9 +310,16 @@
           var marker = L.marker([data[index].startPoint.lat, data[index].startPoint.long], { icon: markerIcon })
               .addTo(map);
 
+<<<<<<< HEAD
+          var stopping_box_text =`<div class="status-cont"><button class="stop-but" id="stopButton-${1}" onclick="handleStopButton(${-1})">Edit</button><div class="lat-long-txt">Lat:${parseFloat(data[index].startPoint.lat).toFixed(5)} Long:${parseFloat(data[index].startPoint.long).toFixed(5)}</div><br></div>`;
+          data[index].stops.forEach((a, b) => {
+              stopping_box_text += `
+        Stopping-${b + 2} : ${a.name}<div class="status-cont"><button class="stop-but" id="stopButton-${b}" onclick="handleStopButton(${b})">Edit</button><div class="lat-long-txt">Lat:${parseFloat(a.lat).toFixed(5)} Long:${parseFloat(a.long).toFixed(5)}</div><br></div>`;
+=======
           var stopping_box_text ="";
           data[index].stops.forEach((a, b) => {
               stopping_box_text += ("Stopping-"+(b+2)+" : "+a.name+"<br>");
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
               var stoppingMarker = L.marker([a.lat, a.long], { icon: customStoppingIcon })
                   .addTo(map)
                   .bindTooltip(a.name, {
@@ -278,6 +338,11 @@
                   tooltip.classList.remove('visible');
               });
           });
+<<<<<<< HEAD
+          stopping_box_text += `
+        <button class="conf-but" id="confButton" onclick="handleUpdateButton()">Update</button><div class="lat-long-txt" id="confText">Lat: Long:</div>`;
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
           adjustMarkerSize();
           var route_box = document.getElementById('route-details');
           var main_box = document.getElementById('main-details');
@@ -285,6 +350,124 @@
           route_box.style.display = "flex";
           main_box.innerHTML = 'Route Name : ' + data[index].name +'<br>Starting&nbsp;Point : '+data[index].startPoint.name;
           stopping_box.innerHTML = stopping_box_text;
+<<<<<<< HEAD
+          document.getElementById('confButton').style.display = "none";
+          document.getElementById('confText').style.display = "none";
+          map.on('zoomend', adjustMarkerSize);
+          var midpoint = L.latLng(
+              (data[index].destination.lat),
+              (data[index].destination.long)
+          );
+          map.flyTo(midpoint, 11)
+      }
+      function objectToArray(obj) {
+        return Object.entries(obj).map(([key, value]) => ({ key, value }));
+      }
+      function handleUpdateButton()
+      {
+        const center = map.getCenter();
+        if(stopIndexTemp == -1)
+        {
+            data[index].startPoint.lat = center.lat;
+            data[index].startPoint.long = center.lng;
+        }
+        else
+        {
+            data[index].stops[stopIndexTemp].lat = center.lat;
+            data[index].stops[stopIndexTemp].long = center.lng;
+        }
+        const newData = { ...data[index]};
+        delete newData["id"];
+        delete newData["geometry"];
+        newData.stops.forEach(stop => {
+            delete stop.id;
+            delete stop.routeId;
+            stop["lat"] = parseFloat(stop["lat"]);
+            stop["long"] = parseFloat(stop["long"]);
+        });
+        newData.startPoint["lat"] = parseFloat(newData.startPoint["lat"]);
+        newData.startPoint["long"] = parseFloat(newData.startPoint["long"]);
+        // const newData = {
+        //     routeNo:"9A",
+        //     routeId:"505",
+        //     name:"Poonamalle",
+        //     type:"NONAC",
+        //     stops:[{
+        //         name:"Karayanchavadi",
+        //         lat:13.047380628699885,
+        //         long:80.109635553246
+        //     },
+        //     {
+        //         name:"porur",
+        //         lat:13.036237000868617,
+        //         long: 80.14912287676385
+        //     },
+        //     {
+        //         name:"Gerugambakkam",
+        //         lat:13.011599342507768, 
+        //         long: 80.1288963376111
+        //     },
+        //     {
+        //         name:"Kamarajapuram",
+        //         lat:12.971820296089376, 
+        //         long: 80.11849074643403
+        //     },
+        //     {
+        //         name:"Tiruneermalai",
+        //         lat:12.957483031180852, 
+        //         long:80.11939149942077
+        //     },
+        //     {
+        //         name:"Thambaram",
+        //         lat:12.92574814260217, 
+        //         long:80.10034995323802
+        //     },
+        //     {
+        //         name:"Vandalur",
+        //         lat:12.879626716612924, 
+        //         long:80.08007905737011
+        //     },
+        //     {
+        //         name:"VIT CHENNAI",
+        //         lat:12.840561042795008,
+        //         long:80.15310348748496
+        //     }]
+        // }
+        fetch('/routes',{method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify(newData)})
+        .then(response => response.json())
+        .then(data => console.log("Success"))
+        .catch(error => console.log("Error"));
+        console.log(newData);
+        mapInit();
+        plotRoute(index);
+      }
+
+      function handleStopButton(stopIndex) 
+      {
+          alert("Button clicked for Stopping-" + (stopIndex + 2));
+          document.getElementById('confButton').style.display = "flex";
+          document.getElementById('confText').style.display = "flex";
+          stopIndexTemp = stopIndex;
+          if (!locatorMarker) {
+            locatorMarker = L.marker(map.getCenter(), {
+            icon: L.icon({
+                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41]
+            })
+            }).addTo(map);
+        }
+        updateLocator();
+      }
+      function updateLocator() {
+        if(locatorMarker) {
+            const center = map.getCenter();
+            locatorMarker.setLatLng(center);
+            var latlongtxt = document.getElementById("confText");
+            latlongtxt.innerHTML = `Lat:${center.lat.toFixed(5)} Long:${center.lng.toFixed(5)}`;
+        }
+      }
+=======
           map.on('zoomend', adjustMarkerSize);
           var midpoint = L.latLng(
               (13.014433 + data[index].startPoint.lat) / 2,
@@ -293,6 +476,7 @@
           map.flyTo(midpoint, 11)
       }
 
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
       function loadingOn(txt)
       {
           document.getElementById('loading-screen').style.display = 'flex';
@@ -528,6 +712,10 @@
               map.flyTo([userlat, userlng], 14);
           }
       };
+<<<<<<< HEAD
+
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
     </script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>

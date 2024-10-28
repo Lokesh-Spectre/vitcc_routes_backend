@@ -108,6 +108,10 @@
 .wrapper.active .content{
   display: block;
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
 .content .search{
   position: relative;
 }
@@ -136,6 +140,41 @@
 .search input::placeholder{
   color: #bfbfbf;
 }
+<<<<<<< HEAD
+.stop-but {
+    background-color: #007bff; 
+    color: white;
+    border: none; 
+    padding: 5px 10px;
+    font-size: 14px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin-left: 10px; 
+}
+.status-cont
+{
+    display: flex;
+    flex-direction: row;
+}
+.lat-long-txt
+{
+    margin-left: 10px;
+    font-size: 13px;
+    color: gray;
+}
+.conf-but
+{
+    background-color: #05961d; 
+    color: white;
+    border: none; 
+    padding: 5px 10px;
+    font-size: 14px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin-left: 10px; 
+}
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
 .content .options{
   margin-top: 10px;
   max-height: 250px;
@@ -194,7 +233,12 @@
 .stopping-details
 {
     display: flex;
+<<<<<<< HEAD
+    align-items: center;
+    flex-direction: column;
+=======
     flex-direction: row;
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
     justify-content: center;
     line-height: 35px;
     height: auto;
@@ -508,8 +552,12 @@
             padding-left: 10px;
             padding-right: 10px;
             max-height: 60%;
+<<<<<<< HEAD
+            overflow: auto; 
+=======
             max-width: 100%; /* Ensures the box doesn't exceed the viewport width */
             overflow: auto; /* Adds scrollbars if content exceeds the box */
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         }
         
         .main-details {
@@ -524,7 +572,11 @@
         
         .stopping-details {
             display: flex;
+<<<<<<< HEAD
+            flex-direction: column;
+=======
             flex-direction: row;
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
             justify-content: center;
             font-size: 1.7vw;
             line-height: 15px;
@@ -533,7 +585,38 @@
             margin-bottom: 5%;
             margin-top: 5%;
         }
+<<<<<<< HEAD
+        .conf-but
+        {
+            background-color: #05961d; 
+            color: white;
+            border: none; 
+            padding: 3px 6px;
+            font-size: 9px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-left: 10px; 
+        }
+        .lat-long-txt
+        {
+            margin-left: 10px;
+            font-size: 6px;
+            color: gray;
+        }
+        .stop-but {
+            background-color: #007bff; 
+            color: white;
+            height: 1%;
+            border: none; 
+            padding: 2px 5px;
+            font-size: 7px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-left: 10px; 
+        }
+=======
         
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
         .side-bar
         {
             background-color: white;

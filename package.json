@@ -17,6 +17,10 @@
     "express": "^4.19.2",
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
+<<<<<<< HEAD
+    "node-fetch": "^3.3.2",
+=======
+>>>>>>> 90dc44f26f1b8974463f637f94fc2909cafbf440
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
   }
